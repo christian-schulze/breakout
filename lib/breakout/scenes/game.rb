@@ -15,8 +15,8 @@ module Breakout
         @entities = {}
 
         entities[:player]            = build_human_player()
-        entities[:ball_controller]   = build_ball_controller()
         entities[:blocks_controller] = build_blocks_controller()
+        entities[:ball_controller]   = build_ball_controller()
       end
 
       def clean_up
@@ -26,7 +26,8 @@ module Breakout
       def register
         always do
           entities.values.each(&:update)
-          handle_end_of_game
+          handle_game_over
+          handle_winner
         end
       end
 
@@ -42,10 +43,17 @@ module Breakout
         collision?(position, offset, view.h)
       end
 
-      def handle_end_of_game
+      def handle_game_over
         if entities[:ball_controller].out_of_bounds?
           exit!
           push_scene(:game_over)
+        end
+      end
+
+      def handle_winner
+        if entities[:blocks_controller].no_more_blocks?
+          exit!
+          push_scene(:winner)
         end
       end
 
@@ -78,6 +86,11 @@ module Breakout
         )
       end
 
+      def build_blocks_controller
+        blocks = BlockBuilder.build_blocks(window)
+        BlocksController.new(blocks)
+      end
+
       def build_ball
         Ball.new(
           target:     window,
@@ -91,15 +104,11 @@ module Breakout
 
       def build_ball_controller
         BallController.new(
-          scene:  self,
-          ball:   build_ball(),
-          player: entities[:player]
+          scene:             self,
+          ball:              build_ball(),
+          player:            entities[:player],
+          blocks_controller: entities[:blocks_controller],
         )
-      end
-
-      def build_blocks_controller
-        blocks = BlockBuilder.build_blocks(window)
-        BlocksController.new(blocks)
       end
 
       def view

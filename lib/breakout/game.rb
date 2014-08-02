@@ -3,6 +3,7 @@ require 'ray'
 require_relative './scenes/title'
 require_relative './scenes/game'
 require_relative './scenes/game_over'
+require_relative './scenes/winner'
 
 module Breakout
   class Game < Ray::Game
@@ -12,6 +13,7 @@ module Breakout
       Scenes::Title.bind(self)
       Scenes::Game.bind(self)
       Scenes::GameOver.bind(self)
+      Scenes::Winner.bind(self)
 
       push_scene(:title)
     end

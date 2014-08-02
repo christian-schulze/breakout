@@ -17,8 +17,18 @@ module Breakout
       @target.draw(Ray::Polygon.rectangle([x, y, width, height], colour))
     end
 
-    def collision?(x, y, offset)
+    def within_x(position, offset)
+      within((x..x + width), position, offset)
+    end
 
+    def within_y(position, offset)
+      within((y..y + height), position, offset)
+    end
+
+    private
+
+    def within(range, position, offset)
+      range.include?(position + offset) || range.include?(position - offset)
     end
   end
 end

@@ -12,13 +12,19 @@ module Breakout
       @blocks.each(&:render)
     end
 
-    def collision?(x, y, velocity_x, velocity_y, offset)
-      case
-      when velocity_x > 0 && velocity_y > 0
-      when velocity_x < 0 && velocity_y < 0
-      when velocity_x > 0 && velocity_y < 0
-      when velocity_x < 0 && velocity_y > 0
+    def collision?(x, y, offset)
+      @blocks.each do |block|
+        if block.within_x(x, offset) && block.within_y(y, offset)
+          @blocks.delete(block)
+          return true
+        end
       end
+
+      false
+    end
+
+    def no_more_blocks?
+      @blocks.empty?
     end
   end
 end

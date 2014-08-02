@@ -2,12 +2,13 @@ module Breakout
   class BallController
     MAX_SPEED = 5
 
-    attr_reader :scene, :ball, :player
+    attr_reader :scene, :ball, :player, :blocks_controller
 
-    def initialize(scene:, ball:, player:)
-      @scene  = scene
-      @ball   = ball
-      @player = player
+    def initialize(scene:, ball:, player:, blocks_controller:)
+      @scene             = scene
+      @ball              = ball
+      @player            = player
+      @blocks_controller = blocks_controller
     end
 
     def update
@@ -34,15 +35,24 @@ module Breakout
     def move_x
       ball.move_x
 
-      ball.reverse_x if scene.collision_x?(ball.x, ball.radius)
+      if scene.collision_x?(ball.x, ball.radius)
+        ball.reverse_x
+      elsif blocks_controller.collision?(ball.x, ball.y, ball.radius)
+        ball.reverse_x
+      end
     end
 
     def move_y
       ball.move_y
 
-      if ball.velocity_y > 0 && player.collision?(ball.x, ball.y, ball.radius)
+      case
+      when ball.velocity_y > 0 && player.collision?(ball.x, ball.y, ball.radius)
         ball.reverse_y
-      elsif ball.velocity_y < 0 && scene.collision_y?(ball.y, ball.radius)
+      when ball.velocity_y > 0 && blocks_controller.collision?(ball.x, ball.y, ball.radius)
+        ball.reverse_y
+      when ball.velocity_y < 0 && scene.collision_y?(ball.y, ball.radius)
+        ball.reverse_y
+      when ball.velocity_y < 0 && blocks_controller.collision?(ball.x, ball.y, ball.radius)
         ball.reverse_y
       end
     end

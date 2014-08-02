@@ -31,30 +31,5 @@ module Breakout
     def reverse_y
       @velocity_y = -velocity_y
     end
-
-    private
-
-    # def move
-    #   @x, @velocity_x = move_dimension(x, velocity_x, view.w)
-    #   @y, @velocity_y = move_dimension(y, velocity_y, view.h)
-    # end
-    #
-    # def move_dimension(position, velocity, limit)
-    #   position += velocity
-    #
-    #   if position < radius
-    #     position = radius
-    #     velocity = -velocity
-    #   elsif position > limit - radius
-    #     position = (limit - radius) - (position - (limit - radius))
-    #     velocity = -velocity
-    #   end
-    #
-    #   return position, velocity
-    # end
-    #
-    # def view
-    #   @target.view
-    # end
   end
 end

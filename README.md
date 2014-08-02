@@ -32,7 +32,7 @@ ruby game.rb
 - [X] Bricks.
 - [X] Ball/Brick collision detection.
 - [ ] More angles when ball bounces off paddle and bricks.
-- [ ] Levels - ball speed, paddle size, brick strength etc (increasing difficultly).
+- [ ] Levels - ball speed, paddle size, brick strength etc (increasing difficulty).
 
 ### License
 
